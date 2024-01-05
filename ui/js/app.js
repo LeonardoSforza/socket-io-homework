@@ -58,9 +58,20 @@ form.addEventListener("submit", (e) => {
   if (chatInput.value) {
     const newMessage = createMessage(chatInput.value);
     socket.emit("chat message", newMessage);
-    getMessage(newMessage);
     chatInput.value = "";
   }
+});
+
+LOAD_MESSAGES = false;
+
+// Load existing messages when a client connects
+socket.on("connect", () => {
+  socket.on("load messages", (existingMessages) => {
+    if (!LOAD_MESSAGES) {
+      existingMessages.forEach((msg) => getMessage(msg));
+      LOAD_MESSAGES = true;
+    }
+  });
 });
 
 socket.on("typing", (nickname) => {
@@ -69,6 +80,7 @@ socket.on("typing", (nickname) => {
 });
 
 socket.on("chat message", (msg) => {
+  console.log(`msg: ${msg}`);
   getMessage(msg);
 });
 
