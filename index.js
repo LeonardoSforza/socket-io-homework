@@ -2,7 +2,12 @@ const express = require("express");
 const app = express();
 const http = require("http").createServer(app);
 const path = require("path");
-const io = require("socket.io")(http);
+const io = require("socket.io")(http, {
+  cors: {
+    origin: "http://localhost:3002",  // or your client's origin
+    methods: ["GET", "POST"],
+  },
+});
 
 const port = 3002;
 
@@ -28,4 +33,6 @@ io.on("connection", (socket) => {
   });
 });
 
-http.listen(port, () => console.log(`Server started on port ${port}`));
+http.listen(port, '0.0.0.0', () => {
+  console.log(`Server started on http://0.0.0.0:${port}`);
+});

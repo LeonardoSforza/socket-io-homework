@@ -26,7 +26,7 @@ nickContainer.addEventListener("submit", (e) => {
   nickContainer.hidden = true;
 });
 
-const socket = io();
+const socket = io('http://192.168.178.151:3002');
 
 let isTyping = false;
 
